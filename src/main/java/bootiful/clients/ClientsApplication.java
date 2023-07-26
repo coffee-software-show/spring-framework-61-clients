@@ -35,11 +35,11 @@ public class ClientsApplication {
     ApplicationRunner runner(ManualStarWarsClient manual, AutoStarWarsClient auto, JdbcClient jdbcClient) {
         return args -> {
             RowMapper<Planet> planetRowMapper = (rs, rowNum) -> new Planet(rs.getString("name"), 0, 0, null, null, null, null, null, List.of(),
-                    new String[0],  null , null, null);
+                    new String[0],  rs.getTimestamp("created").toInstant() , null, null);
 //            var kh = new GeneratedKeyHolder(List.of(Map.of("id", Integer.class)));
             var planet = manual.planets(4);
             var updated = jdbcClient
-                    .sql("insert into planet (name ) values(?)")
+                    .sql("insert into planet (name, created ) values(?, ?)")
                     .params(List.of(planet.name()))
                     .update( );
             Assert.state(updated > 0, "there should have been one or more records updated");

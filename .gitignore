@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### mvn ###
+.mvn
+target/
